@@ -15,6 +15,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import HomeScreen from '../screens/HomeScreen';
+import MovieDetailsScreen from '../screens/MovieDetailsScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, HomeParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -48,9 +49,10 @@ function RootNavigator() {
   );
 }
 
-function TabOneNavigator(){
+function HomeScreenNavigator(){
   return(
     <HomeStack.Navigator>
+      <HomeStack.Screen name="MovieDetailsScreen" component={MovieDetailsScreen} options={{ title: ''}}/>
       <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false}}/>
     </HomeStack.Navigator>
   )
@@ -69,11 +71,11 @@ function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: Colors[colorScheme].tint, headerShown: false
       }}>
       <BottomTab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeScreenNavigator}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           tabBarIcon: ({ color }) => <AntDesign name="home" size={24} color={color} style={{marginBottom: 8}} />,
