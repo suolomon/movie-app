@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 import { Episode } from '../../types'
 import {Video} from 'expo-av'
 import styles from './styles'
-import { unloadAsync } from 'expo-font'
+import Storage from '@aws-amplify/storage';
 
 interface VideoPlayerProps {
     episode: Episode;
@@ -13,6 +13,7 @@ const VideoPlayer = (props: VideoPlayerProps) => {
     const {episode} = props;
     const video = useRef<Playback>(null);
     const [status, setStatus] = useState({});
+    const [videoURL, setVideoURL] = useState('')
 
     useEffect(() => {
         if(!video) {
@@ -28,13 +29,22 @@ const VideoPlayer = (props: VideoPlayerProps) => {
         })
     },[episode])
 
+    useEffect(() => {
+        if(episode.video.startsWith('http')){
+            setVideoURL(episode.video)
+        }
+        Storage.get(episode.video)
+        .then(setVideoURL);
+    },[])
+    console.log(videoURL)
+
 
     return (
             <Video 
             ref={video}
             style={styles.video}
             source={{
-            uri: episode.video,
+            uri: videoURL,
             }}
             posterSource={{uri: episode.poster}}
             posterStyle={{resizeMode: 'cover'}}
