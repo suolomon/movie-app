@@ -42,5 +42,11 @@
         }
       }
     }
+  },
+  "storage": {
+    "movieMedia": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

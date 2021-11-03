@@ -2,10 +2,11 @@ import React, {useState, useEffect}from "react";
 
 import styles from "./styles";
 import { Image, FlatList, Pressable } from "react-native";
-import {useNavigation} from '@react-navigation/native'
 import { Text} from "../Themed";
 import { Category, Movie } from "../../src/models";
 import { DataStore } from "@aws-amplify/datastore";
+import {Storage} from 'aws-amplify';
+import MovieItem from "../MovieItem";
 
 
 interface HomeCategoryProps {
@@ -17,7 +18,7 @@ const HomeCategory = (props: HomeCategoryProps) => {
     
     const [movies, setMovies] = useState<Movie[]>([]);
 
-    const navigation = useNavigation();
+   
     
     useEffect(() => {
      const fetchMovies = async () => {
@@ -30,21 +31,17 @@ const HomeCategory = (props: HomeCategoryProps) => {
 
     },[])
 
-    const onMoviePress = (movie: Movie) => {
-      navigation.navigate('MovieDetailsScreen', { id: movie.id})
-    }
+ 
+
+  
+
   return (
     <>
       <Text style={styles.title}>{category.title}</Text>
 
       <FlatList
         data={movies}
-        renderItem={({ item }) => (
-          <Pressable onPress={() => onMoviePress(item)}>
-
-            <Image style={styles.image} source={{ uri: item.poster }} />
-          </Pressable>
-        )}
+        renderItem={({ item }) => (<MovieItem movie={item}/>)}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
